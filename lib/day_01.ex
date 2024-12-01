@@ -10,6 +10,19 @@ defmodule AdventOfCode.Day01 do
     |> Enum.sum()
   end
 
+  @doc """
+  Process the input to calculate the sum of the products based on the frequency of the numbers.
+  """
+  def part2(input) do
+    {first_numbers, second_numbers} = extract_numbers(input)
+
+    frequencies = Util.frequencies(second_numbers)
+
+    first_numbers
+    |> Enum.map(fn number -> number * Map.get(frequencies, number, 0) end)
+    |> Enum.sum()
+  end
+
   defp extract_numbers(input) do
     input
     |> String.split("\n", trim: true)
