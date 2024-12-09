@@ -23,13 +23,15 @@ defmodule AdventOfCode.Day06 do
     guard_path = walk(map, guard)
     possible_positions = MapSet.delete(guard_path, guard)
 
-    Enum.reduce(possible_positions, 0, fn pos, acc ->
+    possible_positions
+    |> Task.async_stream(fn pos ->
       if looped?(Map.put(map, pos, "#"), guard, MapSet.new()) do
-        acc + 1
+        true
       else
-        acc
+        false
       end
     end)
+    |> Enum.count(fn {:ok, result} -> result end)
   end
 
   defp parse_input(input) do
